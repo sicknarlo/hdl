@@ -1,0 +1,136 @@
+<%= form_for @team, :html => { :class => "form-horizontal team" } do |f| %>
+
+    <% if @team.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@team.errors.count, "error") %> prohibited this team from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @team.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :name, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:name]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :owners, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :owners, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:owners]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :points_for, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :points_for, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:points_for]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :points_against, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :points_against, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:points_against]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :wins, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :wins, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:wins]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :losses, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :losses, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:losses]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :ties, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :ties, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:ties]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :efficiency, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :efficiency, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:efficiency]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :current_streak, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :current_streak, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:current_streak]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :best_streak, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :best_streak, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:best_streak]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :post_wins, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :post_wins, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:post_wins]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :post_losses, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :post_losses, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:post_losses]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :highest_score, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :highest_score, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:highest_score]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :lowest_score, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lowest_score, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:lowest_score]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :blowouts, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :blowouts, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:blowouts]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :top_gm, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :top_gm, :class => 'form-control' %>
+    </div>
+    <%= error_span(@team[:top_gm]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            teams_path, :class => 'btn btn-default' %>
+
+<% end %>

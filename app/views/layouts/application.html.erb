@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hdl</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="wrapper">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="#">
+                      Heinbail Dynasty League
+                  </a>
+              </li>
+              <li>
+                  <a href="#">Dashboard</a>
+              </li>
+              <li>
+                  <a href="#">Shortcuts</a>
+              </li>
+              <li>
+                  <a href="#">Overview</a>
+              </li>
+              <li>
+                  <a href="#">Events</a>
+              </li>
+              <li>
+                  <a href="#">About</a>
+              </li>
+              <li>
+                  <a href="#">Services</a>
+              </li>
+              <li>
+                  <a href="#">Contact</a>
+              </li>
+          </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+      <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+              <%= yield %>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+        <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+
+</body>
+</html>

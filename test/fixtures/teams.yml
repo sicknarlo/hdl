@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  owners: MyString
+  points_for: 1
+  points_against: 1
+  wins: 1
+  losses: 1
+  ties: 1
+  efficiency: 1
+  current_streak: 1
+  best_streak: 1
+  post_wins: 1
+  post_losses: 1
+  highest_score: 1
+  lowest_score: 1
+  blowouts: 1
+  top_gm: 1
+
+two:
+  name: MyString
+  owners: MyString
+  points_for: 1
+  points_against: 1
+  wins: 1
+  losses: 1
+  ties: 1
+  efficiency: 1
+  current_streak: 1
+  best_streak: 1
+  post_wins: 1
+  post_losses: 1
+  highest_score: 1
+  lowest_score: 1
+  blowouts: 1
+  top_gm: 1
