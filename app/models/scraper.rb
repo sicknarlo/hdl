@@ -70,27 +70,23 @@ class Scraper
       t2_score = page.search('//*[@id="content"]/div/div[5]/div/div/div/div[6]/div[1]/div').text.to_f
 
       # Create new match
-      match = Match.create
-
-      match.season = 2015
 
       # Create Scores
       t1s = Score.create
       t1s.team_id = team1.id
       t1s.score = t1_score
-      t1s.match_id = match.id
+      t1s.week = week
+      t1s.season = 2015
 
       t2s = Score.create
-      t2s.team_id = team1.id
+      t2s.team_id = team2.id
       t2s.score = t2_score
-      t2s.match_id = match.id
+      t2s.week = week
+      t2s.season = 2015
 
 
-      match.team1_score = t1s.id
-      match.team2_score = t2s.id
-      match.post_season = false
-      match.week = week
-      match.save
+      t1s.opponent_id = team2.id
+      t2s.opponent_id = team1.id
       t1s.save
       t2s.save
 
@@ -98,12 +94,22 @@ class Scraper
       # Update streaks
       if t1_score > t2_score
         winner = team1
-        team2.current_streak = 0
+        if team2.current_streak > 0
+          team2.current_streak = 0
+          team2.current_losing_streak = 1
+        else
+          team2.current_losing_streak += 1
+        end
         team1.current_streak += 1
         team1.best_streak = team1.current_streak if team1.current_streak > team1.best_streak
       elsif t1_score < t2_score
         winner = team2
-        team1.current_streak = 0
+        if team1.current_streak > 0
+          team1.current_streak = 0
+          team1.current_losing_streak = 1
+        else
+          team1.current_losing_streak += 1
+        end
         team2.current_streak += 1
         team2.best_streak = team2.current_streak if team2.current_streak > team2.best_streak
       else
@@ -113,6 +119,144 @@ class Scraper
 
       team1.save
       team2.save
+
+      # Scrape player stats
+      pos_pool = ["QB", "RB", "RB", "WR", "WR", "WR", "TE", "FLEX", "FLEX", "K", "DL", "LB", "DB"]
+
+      flex = ["RB", "WR", "TE"]
+
+      db =["S", "CB"]
+      dl = ["DE", "DT"]
+      lb = ["MLB", "OLB"]
+
+      player_tables = page.parser.css('.playerTableTable')
+
+      used_players = []
+      optimal = 0
+      pos_pool.each do |pos|
+        ideal = [0, ""]
+        player_tables[0].children[3..-1].each do |row|
+          prow = row.children[1].text.split(",")
+          if prow.length > 1
+            pname = prow[0].gsub(/[[:space:]]/, ' ')
+            ppos = prow[1].gsub(/[[:space:]]/, ' ').split(" ")[1].split(",")[0]
+            pscore = row.children[-1].text.to_f
+            if db.include?(ppos)
+              ppos = "DB"
+            elsif dl.include?(ppos)
+              ppos = "DL"
+            elsif lb.include?(ppos)
+              ppos = "LB"
+            end
+            if pos == "FLEX" && flex.include?(ppos)
+              if pscore > ideal[0] && !used_players.include?(pname)
+                ideal = [pscore, pname]
+              end
+            end
+            if ppos == pos && !used_players.include?(pname)
+              if pscore > ideal[0]
+                ideal = [pscore, pname]
+              end
+            end
+          end
+        end
+
+        player_tables[1].children[2..-1].each do |row|
+          prow = row.children[1].text.split(",")
+          if prow.length > 1
+            pname = prow[0].gsub(/[[:space:]]/, ' ')
+            ppos = prow[1].gsub(/[[:space:]]/, ' ').split(" ")[1].split(",")[0]
+            pscore = row.children[-1].text.to_f
+            if db.include?(ppos)
+              ppos = "DB"
+            elsif dl.include?(ppos)
+              ppos = "DL"
+            elsif lb.include?(ppos)
+              ppos = "LB"
+            end
+            if pos == "FLEX" && flex.include?(ppos)
+              if pscore > ideal[0] && !used_players.include?(pname)
+                ideal = [pscore, pname]
+              end
+            end
+            if ppos == pos && !used_players.include?(pname)
+              if pscore > ideal[0]
+                ideal = [pscore, pname]
+              end
+            end
+          end
+        end
+        optimal += ideal[0]
+        used_players << ideal[1]
+      end
+      p used_players
+      t1s.optimal = optimal
+      t1s.save
+
+
+      used_players = []
+      optimal = 0
+      players = []
+      pos_pool.each do |pos|
+        ideal = [0, ""]
+        player_tables[2].children[3..-1].each do |row|
+          prow = row.children[1].text.split(",")
+          if prow.length > 1
+            pname = prow[0].gsub(/[[:space:]]/, ' ')
+            ppos = prow[1].gsub(/[[:space:]]/, ' ').split(" ")[1].split(",")[0]
+            pscore = row.children[-1].text.to_f
+            if db.include?(ppos)
+              ppos = "DB"
+            elsif dl.include?(ppos)
+              ppos = "DL"
+            elsif lb.include?(ppos)
+              ppos = "LB"
+            end
+            if pos == "FLEX" && flex.include?(ppos)
+              if pscore > ideal[0] && !used_players.include?(pname)
+                ideal = [pscore, pname]
+              end
+            end
+            if ppos == pos && !used_players.include?(pname)
+              if pscore > ideal[0]
+                ideal = [pscore, pname]
+              end
+            end
+          end
+        end
+
+        player_tables[3].children[2..-1].each do |row|
+          prow = row.children[1].text.split(",")
+          if prow.length > 1
+            pname = prow[0].gsub(/[[:space:]]/, ' ')
+            ppos = prow[1].gsub(/[[:space:]]/, ' ').split(" ")[1].split(",")[0]
+            pscore = row.children[-1].text.to_f
+            p pscore
+            if db.include?(ppos)
+              ppos = "DB"
+            elsif dl.include?(ppos)
+              ppos = "DL"
+            elsif lb.include?(ppos)
+              ppos = "LB"
+            end
+            if pos == "FLEX" && flex.include?(ppos)
+              if pscore > ideal[0] && !used_players.include?(pname)
+                ideal = [pscore, pname]
+              end
+            end
+            if ppos == pos && !used_players.include?(pname)
+              if pscore > ideal[0]
+                ideal = [pscore, pname]
+              end
+            end
+          end
+        end
+        used_players << ideal[1]
+        optimal += ideal[0]
+      end
+      p used_players
+      t2s.optimal = optimal
+      t2s.save
 
     end # End loop
 

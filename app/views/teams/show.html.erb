@@ -1,49 +1,79 @@
-<%- model_class = Team -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
-</div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @team.name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:owners) %>:</strong></dt>
-  <dd><%= @team.owners %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:points_for) %>:</strong></dt>
-  <dd><%= @team.points_for %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:points_against) %>:</strong></dt>
-  <dd><%= @team.points_against %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:wins) %>:</strong></dt>
-  <dd><%= @team.wins %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:losses) %>:</strong></dt>
-  <dd><%= @team.losses %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:ties) %>:</strong></dt>
-  <dd><%= @team.ties %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:efficiency) %>:</strong></dt>
-  <dd><%= @team.efficiency %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:current_streak) %>:</strong></dt>
-  <dd><%= @team.current_streak %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:best_streak) %>:</strong></dt>
-  <dd><%= @team.best_streak %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:post_wins) %>:</strong></dt>
-  <dd><%= @team.post_wins %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:post_losses) %>:</strong></dt>
-  <dd><%= @team.post_losses %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:highest_score) %>:</strong></dt>
-  <dd><%= @team.highest_score %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:lowest_score) %>:</strong></dt>
-  <dd><%= @team.lowest_score %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:blowouts) %>:</strong></dt>
-  <dd><%= @team.blowouts %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:top_gm) %>:</strong></dt>
-  <dd><%= @team.top_gm %></dd>
-</dl>
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="intro-header" style="background-image: url('http://i.imgur.com/X2urZpm.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1><%= @team.name %></h1>
+                    <h2 class="subheading"><%= @team.owners %></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
-              teams_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_team_path(@team), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              team_path(@team),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+<!-- Post Content -->
+<article>
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h2 class="section-header">All Time Stats</h2>
+            <div class="col-xs-4">
+              <div class="panel panel-default">
+                <div class="panel-body text-center">
+                  <h3>Record</h3>
+                  <%= @team.record[0] %>-<%= @team.record[1] %>-<%= @team.record[2] %>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="panel panel-default">
+                <div class="panel-body text-center">
+                  <h3>All Play</h3>
+                  <%= @team.all_play_by_season(2015)[0] %>-<%= @team.all_play_by_season(2015)[1] %>-<%= @team.all_play_by_season(2015)[2] %>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="panel panel-default">
+                <div class="panel-body text-center">
+                  <h3>Efficiency</h3>
+                  <%= @team.total_efficiency %>%
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+              <h2 class="section-header">2015 Stats</h2>
+              <div class="col-xs-4">
+                <div class="panel panel-default">
+                  <div class="panel-body text-center">
+                    <h3>Power Rank</h3>
+                    <%= @team.ranks.last.rank %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="panel panel-default">
+                  <div class="panel-body text-center">
+                    <h3>All Play</h3>
+                    <%= @team.all_play_by_season(2015)[0] %>-<%= @team.all_play_by_season(2015)[1] %>-<%= @team.all_play_by_season(2015)[2] %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="panel panel-default">
+                  <div class="panel-body text-center">
+                    <h3>Efficiency</h3>
+                    <%= @team.season_efficiency(2015) %>%
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</article>
